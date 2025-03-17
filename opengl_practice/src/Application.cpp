@@ -27,17 +27,23 @@ int main(void) {
   std::cout << glGetString(GL_VERSION) << " " << glGetString(GL_VENDOR)
             << std::endl;
 
+  float postions[] = {-0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
+
+  unsigned int buffer;
+  glGenBuffers(1, &buffer);
+  glBindBuffer(GL_ARRAY_BUFFER, buffer);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(postions), postions, GL_STATIC_DRAW);
+
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 三角形
-    glBegin(GL_TRIANGLES);
-    glVertex2f(-0.5f, -0.5f);
-    glVertex2f(0.5f, 0.5f);
-    glVertex2f(0.5f, -0.5f);
-    glEnd();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     /* Swap front and back buffers */
     glfwSwapBuffers(window);
